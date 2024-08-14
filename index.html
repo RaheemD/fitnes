@@ -646,7 +646,11 @@
                             <label for="message" class="form-label">Message</label>
                             <textarea class="form-control" id="message" name="message" rows="5" placeholder="Enter your message" required></textarea>
                         </div>
-                        <div data-netlify-recaptcha="true" required></div>
+                        <div data-netlify-recaptcha="true"></div>
+                         <!-- Error message for reCAPTCHA -->
+                <div id="recaptcha-error" style="color:red;display:none;">
+                    Please complete the reCAPTCHA.
+                </div>
                         <button type="submit" class="btn btn-primary mt-3">Send Message</button>
                     </form>
                 </div>
@@ -828,7 +832,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-
+document.querySelector('form[name="contact"]').addEventListener('submit', function(event) {
+        if (grecaptcha && grecaptcha.getResponse().length === 0) {
+            event.preventDefault(); // Stop form submission
+            document.getElementById('recaptcha-error').style.display = 'block';
+        }
+    });
 
     joinNowBtn.onclick = function() {
         authModal.style.display = "block";
